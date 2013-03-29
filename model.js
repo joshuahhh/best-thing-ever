@@ -22,6 +22,17 @@ Contenders.allow({
   }
 });
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Sessions
+
+/*
+  Each session is represented by a document in the Sessions collection:
+    id: client-generated id
+*/
+Sessions = new Meteor.Collection("sessions");
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Comparisons
 
@@ -33,3 +44,13 @@ Contenders.allow({
     session: session id
 */
 Comparisons = new Meteor.Collection("comparisons");
+
+Meteor.methods({
+  submitComparison: function(comparison) {
+    Comparisons.insert(comparison);
+
+    if (Meteor.isServer) {
+      updateRankings();
+    }
+  }
+});
