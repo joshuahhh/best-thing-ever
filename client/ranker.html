@@ -1,6 +1,9 @@
 <head>
   <title>Ranker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+    .selected {font-weight:bold;}
+  </style>
 </head>
 
 <body>
@@ -9,4 +12,21 @@
 
 <template name="page">
   {{id}}
+  {{> comparisons}}
+</template>
+
+<template name="comparisons">
+  <ul>
+    {{#each comparisons}}
+      {{> comparison}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="comparison">
+  <li>
+    <a href="#" class="option1 {{#if option1selected}}selected{{/if}}">{{option1name}}</a>
+    VS.
+    <a href="#" class="option2 {{#if option2selected}}selected{{/if}}">{{option2name}}</a>
+  </li>
 </template>
