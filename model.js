@@ -24,46 +24,30 @@ Contenders.allow({
   }
 });
 
-dumb_names = [
-  'Devil (film)',
-  'Nicole Polizzi',
-  'The Chronicles of Narnia: Prince Caspian',
-  'The Green Hornet',
-  'Scientology',
-  'Keyshia Cole',
-  'Florence and the Machine',
-  'Jeffrey Dahmer',
-  'Ottoman Empire',
-  'Ted Bundy',
-  'Nikola Tesla',
-  'Belarus',
-  'The Twilight Saga: Breaking Dawn',
-  'Pornography',
-  'The Hangover (film)',
-  'Super Bowl XLV',
-  'Hungary',
-  'Darren Aronofsky',
-  'CSI: Crime Scene Investigation',
-  'Swan Lake'
-]
-
 if (Meteor.isServer) {
   Meteor.startup(function () {
     Contenders._ensureIndex({key: 1, random: 1});
-
-    /* TODO: populate database for real */
-    for (var i = 0; i < dumb_names.length; i++) {
-      if (! Contenders.findOne({name: dumb_names[i]})) {
-        Contenders.insert({
-          name: dumb_names[i],
-          random: Math.random()
-        });
+    url = "http://web.mit.edu/joshuah/Public/article_names.txt";
+    Meteor.http.get(url, function (error, result) {
+      names = result.content.split('\n');
+      for (var i = 0; i < names.length; i++) {
+        if (! Contenders.findOne({name: names[i]})) {
+          Contenders.insert({
+            name: names[i],
+            random: Math.random()
+          });
+        }
       }
-    }
+    });
   });
 };
 
 randomContender = function () {
+  allContenders = Contenders.find().fetch();
+  return allContenders[Math.floor(Math.random()*allContenders.length)];
+
+  /*
+  // TODO: this doesn't really work
   var rand = Math.random();
   var cmp = Math.random();
   var method1 = {$gte: rand}, method2 = {$lte: rand};
@@ -75,6 +59,7 @@ randomContender = function () {
     result = Contenders.findOne({random: method2});
   }
   return result;
+  */
 };
 
 
@@ -83,7 +68,7 @@ randomContender = function () {
 
 /*
   Each session is represented by a document in the Sessions collection:
-    id: client-generated id
+    [currently no parameters; just server-generated id]
 */
 Sessions = new Meteor.Collection("sessions");
 
