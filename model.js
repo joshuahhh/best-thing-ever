@@ -6,6 +6,7 @@
 
 /*
   Each contender is represented by a document in the Contenders collection:
+    contender_id: matches id's in Comparisons
     name: String
     score: Int (aka ranking)
 */
