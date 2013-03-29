@@ -22,7 +22,6 @@ Template.page.id = function () {
 };
 
 Template.comparisons.comparisons = function () {
-  // console.log(Session.get("comparisons"));
   return Comparisons.find({session: Session.get("session-id")});
 };
 
@@ -41,14 +40,12 @@ Template.comparison.option2selected = function () {
 
 Template.comparison.events({
   'click .option1': function () {
-    Comparisons.update({ _id: this._id},
-                       {$set: { 'choice': 1}});
+    Meteor.call("submitComparison", this._id, 1);
     getNewComparison();
     return false;
   },
   'click .option2': function () {
-    Comparisons.update({ _id: this._id},
-                       {$set: { 'choice': 2}});
+    Meteor.call("submitComparison", this._id, 2);
     getNewComparison();
     return false;
   }

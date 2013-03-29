@@ -113,8 +113,9 @@ Meteor.methods({
     return Comparisons.insert(comparison);
   },
 
-  submitComparison: function(comparison) {
-    Comparisons.insert(comparison);
+  submitComparison: function(comparison_id, choice) {
+    Comparisons.update({ _id: comparison_id},
+                       {$set: {'choice': choice}});
 
     if (Meteor.isServer) {
       // TODO: figure this out
