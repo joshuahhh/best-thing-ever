@@ -116,10 +116,8 @@ Meteor.methods({
   submitComparison: function(comparison_id, choice) {
     Comparisons.update({ _id: comparison_id},
                        {$set: {'choice': choice}});
-
     if (Meteor.isServer) {
-      // TODO: figure this out
-      /*updateRankings();*/
+      update_score(Comparisons.findOne({_id:comparison_id}))
     }
   }
 });

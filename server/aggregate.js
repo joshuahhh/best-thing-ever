@@ -1,7 +1,7 @@
 ////////// Server only aggregation functions//////////
 
 
-var update_score = function (comparison) {
+update_score = function (comparison) {
   if (comparison.choice===1) {
     Contenders.update({_id: comparison.option1}, {$inc: {score: 1}});
   }
@@ -11,13 +11,13 @@ var update_score = function (comparison) {
   return false;
 };
 
-var create_scores = function () {
+create_scores = function () {
   var comparisons = Comparisons.find();
   comparisons.forEach(update_score);
   return false;
 };
 
-var reset_scores = function () {
+reset_scores = function () {
   var contenders = Contenders.find():
   contenders.forEach(function (contender) {
     Contenders.update({_id: contender._id}, {$set: {score: 0}});
