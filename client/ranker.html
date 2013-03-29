@@ -10,3 +10,18 @@
 <template name="page">
   {{id}}
 </template>
+
+<template name="ranking">
+  <div class="rankings">
+    {{# contenders}}
+	  {{contender}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="contender">
+  <div class="contender {{selected}}">
+    <span class="name">{{name}}</span>
+    <span class="score">{{score}}</span>
+  </div>
+</template>

@@ -11,3 +11,7 @@ Meteor.startup(function() {
 Template.page.id = function() {
   return Session.get("id");
 }
+
+Template.rankings.contenders = function () {
+	return Contenders.find({}, {sort: {score: -1, name: 1}})
+}
