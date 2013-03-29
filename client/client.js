@@ -16,7 +16,7 @@ getNewComparison = function () {
 };
 
 Template.page.id = function () {
-  console.log("session-id is...")
+  console.log("session-id is...");
   console.log(Session.get("session-id"));
   return Session.get("session-id");
 };
@@ -51,6 +51,6 @@ Template.comparison.events({
   }
 });
 
-Template.rankings.contenders = function () {
-    return Contenders.find({}, {sort: {score: -1, name: 1}})
+Template.ranking.contenders = function () {
+    return Contenders.find({}, {sort: {score: -1, name: 1}});
 }

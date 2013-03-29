@@ -8,7 +8,7 @@ update_score = function (comparison) {
   else {
     Contenders.update({_id: comparison.option2}, {$inc: {score: 1}});
   }
-  return false;
+  console.log(Contenders);
 };
 
 create_scores = function () {
@@ -18,7 +18,7 @@ create_scores = function () {
 };
 
 reset_scores = function () {
-  var contenders = Contenders.find():
+  var contenders = Contenders.find();
   contenders.forEach(function (contender) {
     Contenders.update({_id: contender._id}, {$set: {score: 0}});
   });

@@ -13,6 +13,7 @@
 <template name="page">
   {{id}}
   {{> comparisons}}
+  {{> ranking}}
 </template>
 
 <template name="comparisons">
@@ -32,16 +33,15 @@
 </template>
 
 <template name="ranking">
-  <div class="rankings">
+  <ol>
     {{#each contenders}}
-	    {{contender}}
+	    {{> contender}}
     {{/each}}
-  </div>
+  </ol>
 </template>
 
 <template name="contender">
-  <div class="contender {{selected}}">
-    <span class="name">{{name}}</span>
-    <span class="score">{{score}}</span>
-  </div>
+  <li>
+    {{name}}, {{score}}
+  </li>
 </template>
