@@ -13,8 +13,8 @@
 
 <template name="ranking">
   <div class="rankings">
-    {{# contenders}}
-	  {{contender}}
+    {{#each contenders}}
+	    {{contender}}
     {{/each}}
   </div>
 </template>

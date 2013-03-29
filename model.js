@@ -7,6 +7,7 @@
 /*
   Each contender is represented by a document in the Contenders collection:
     name: String
+    score: Int (aka ranking)
 */
 Contenders = new Meteor.Collection("contenders");
 
