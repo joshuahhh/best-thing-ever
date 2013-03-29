@@ -14,15 +14,11 @@ update_score = function (comparison) {
 create_scores = function () {
   var comparisons = Comparisons.find();
   comparisons.forEach(update_score);
-  return false;
 };
 
 reset_scores = function () {
   var contenders = Contenders.find();
-  contenders.forEach(function (contender) {
-    Contenders.update({_id: contender._id}, {$set: {score: 0}});
-  });
-  return false; 
+  Contenders.update({}, {$set: {score: 0}}, {multi: true});
 };
 
 
