@@ -2,12 +2,13 @@
 
 Meteor.startup(function() {
   Deps.autorun(function () {
-    if (! Session.get("id")) {
-      Session.set("id", Random.id());
+    if (! Session.get("session-id")) {
+      var session_id = Sessions.insert({});
+      Session.set("session-id", session_id);
     }
   });
 });
 
 Template.page.id = function() {
-  return Session.get("id");
+  return Session.get("session-id");
 }
