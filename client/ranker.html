@@ -30,3 +30,18 @@
     <a href="#" class="option2 {{#if option2selected}}selected{{/if}}">{{option2name}}</a>
   </li>
 </template>
+
+<template name="ranking">
+  <div class="rankings">
+    {{#each contenders}}
+	    {{contender}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="contender">
+  <div class="contender {{selected}}">
+    <span class="name">{{name}}</span>
+    <span class="score">{{score}}</span>
+  </div>
+</template>

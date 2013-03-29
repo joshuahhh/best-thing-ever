@@ -54,3 +54,6 @@ Template.comparison.events({
   }
 });
 
+Template.rankings.contenders = function () {
+    return Contenders.find({}, {sort: {score: -1, name: 1}})
+}
