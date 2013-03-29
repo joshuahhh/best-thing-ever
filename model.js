@@ -87,15 +87,16 @@ Comparisons = new Meteor.Collection("comparisons");
 
 Meteor.methods({
   getNewComparison: function(session_id) {
-    // TODO: could be the same???
-    var option1 = randomContender()._id, option2 = option1;
-    while (option2 == option1) {
-      option2 = randomContender()._id;
+    if (Meteor.isServer) {   // prevent fake randoms on client
+      var option1 = randomContender()._id, option2 = option1;
+      while (option2 == option1) {
+	option2 = randomContender()._id;
+      }
+      comparison = {option1: option1,
+		    option2: option2,
+       		    session: session_id};
+      return Comparisons.insert(comparison);
     }
-    comparison = {option1: option1,
-		  option2: option2,
-		  session: session_id};
-    return Comparisons.insert(comparison);
   },
 
   submitComparison: function(comparison_id, choice) {
