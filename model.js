@@ -82,6 +82,8 @@ Sessions = new Meteor.Collection("sessions");
     option2: contender id
     choice: int (1 or 2)
     session: session id
+    time_issued: number (time comparison issued)
+    time_resolved: number (time comparison resolved)
 */
 Comparisons = new Meteor.Collection("comparisons");
 
@@ -94,14 +96,16 @@ Meteor.methods({
       }
       comparison = {option1: option1,
 		    option2: option2,
-       		    session: session_id};
+       		    session: session_id,
+		    time_issued: Date.now()};
       return Comparisons.insert(comparison);
     }
   },
 
   submitComparison: function(comparison_id, choice) {
     Comparisons.update({ _id: comparison_id},
-                       {$set: {'choice': choice}});
+                       {$set: {'choice': choice,
+                               'time_resolved': Date.now()}});
     if (Meteor.isServer) {
       update_score(Comparisons.findOne({_id:comparison_id}))
     }

@@ -22,7 +22,8 @@ Template.page.id = function () {
 };
 
 Template.comparisons.comparisons = function () {
-  return Comparisons.find({session: Session.get("session-id")});
+  return Comparisons.find({session: Session.get("session-id")},
+			  {sort: {time_issued: -1}});
 };
 
 Template.comparison.option1name = function () {
@@ -40,13 +41,17 @@ Template.comparison.option2selected = function () {
 
 Template.comparison.events({
   'click .option1': function () {
-    Meteor.call("submitComparison", this._id, 1);
-    getNewComparison();
+    if (!this.choice) {
+	Meteor.call("submitComparison", this._id, 1);
+	getNewComparison();
+    }
     return false;
   },
   'click .option2': function () {
-    Meteor.call("submitComparison", this._id, 2);
-    getNewComparison();
+    if (!this.choice) {
+	Meteor.call("submitComparison", this._id, 2);
+	getNewComparison();
+    }
     return false;
   }
 });

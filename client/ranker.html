@@ -2,18 +2,40 @@
   <title>Ranker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style type="text/css">
-    .selected {font-weight:bold;}
+    .selected {
+      font-weight: bold;
+    }
+
+      .jumbotron {
+        margin: 60px 0;
+        text-align: center;
+      }
+      .jumbotron h1 {
+        font-size: 72px;
+        line-height: 1;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
   </style>
 </head>
 
 <body>
-  {{> page}}
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="jumbotron">
+        <h1>The Best Thing Ever</h1>
+        <p class="lead">There are a lot of things. It's about time we rank them all.</p>
+      </div>
+    {{> page}}
+  </div>
 </body>
 
 <template name="page">
-  {{id}}
   {{> comparisons}}
-  {{> ranking}}
+  {{! {{> ranking}}
+  <p> (In case anyone asks, your sesion ID is {{id}}) </p>
 </template>
 
 <template name="comparisons">
@@ -26,9 +48,9 @@
 
 <template name="comparison">
   <li>
-    <a href="#" class="option1 {{#if option1selected}}selected{{/if}}">{{option1name}}</a>
-    VS.
-    <a href="#" class="option2 {{#if option2selected}}selected{{/if}}">{{option2name}}</a>
+    <a href="#" class="btn btn-large option1 {{#if option1selected}}btn-success selected{{/if}} {{#if choice}}disabled{{/if}}">{{option1name}}</a>
+    {{#if option1selected}}&gt;{{/if}}{{#if option2selected}}&lt;{{/if}}{{#unless choice}}???{{/unless}}
+    <a href="#" class="btn btn-large option2 {{#if option2selected}}btn-success selected{{/if}} {{#if choice}}disabled{{/if}}">{{option2name}}</a>
   </li>
 </template>
 
