@@ -23,7 +23,7 @@ getNewComparison = function () {
   Meteor.call("getNewComparison", Session.get("session-id"))
 };
 
-Template.page.showBetterFAQ = function () {
+Template.page.showRanking = function () {
   return Session.get("showRanking");
 }
 
