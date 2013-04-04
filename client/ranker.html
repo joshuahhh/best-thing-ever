@@ -1,63 +1,85 @@
 <head>
-  <title>Ranker</title>
+  <title>Project Best Thing Ever</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style type="text/css">
     .selected {
       font-weight: bold;
     }
 
-      .jumbotron {
-        margin: 60px 0;
-        text-align: center;
-      }
-      .jumbotron h1 {
-        font-size: 72px;
-        line-height: 1;
-      }
-      .jumbotron .btn {
-        font-size: 21px;
-        padding: 14px 24px;
-      }
+    .jumbotron {
+      margin: 60px 0;
+      text-align: center;
+    }
+    .jumbotron h1 {
+      font-size: 72px;
+      line-height: 1;
+    }
+    
+    .table-center
+    {
+      margin: 0 auto !important;
+      float: none !important;
+    }
   </style>
 </head>
 
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="jumbotron">
-        <h1>The Best Thing Ever</h1>
-        <p class="lead">There are a lot of things. It's about time we rank them all.</p>
-      </div>
-    {{> page}}
+<div class="container">
+  <div class="jumbotron">
+    <h1>Project Best Thing Ever</h1>
+    <p class="lead">There are a lot of things. It's about time we figured out which was the best.</p>
   </div>
+  {{> page}}
+</div>
 </body>
 
 <template name="page">
-  {{> comparisons}}
-  {{! {{> ranking}}
-  <p> (In case anyone asks, your sesion ID is {{id}}) </p>
+  <div id="comparisons"> {{> comparisons}}</div>
+  {{#if showRanking}}{{> ranking}}{{/if}}
+  <hr/>
+  {{#if showBetterFAQ}}
+  <div id="better-faq">
+    <h3>What do you mean, <i>better</i>?</h3>
+    <p>You know&hellip; more good.</p>
+    <h3>But isn't <i>good</i> a subjective, contextual category (one not without problematic connotations of cultural supremacy)?</h3>
+    <p>We're not going to find the best thing ever asking questions like that. Less thinking, more clicking.</p>
+  </div>
+  <hr/>
+  {{/if}}
+  <footer>
+    <p>A project of <a href="http://web.mit.edu/joshuah/www/">Joshua Horowitz</a> and <a href="http://web.mit.edu/zyan/www/">Yan Zhu</a> at <a href="http://www.meetup.com/Meteor-SFBay/events/106842372/">Meteor Devshop 2</a>. (<a href="mailto:best@zeromailer.com">Contact us!</a>)</p>
+    <p>(In case anyone asks, your sesion ID is {{id}}) </p>
+  </footer>
 </template>
 
 <template name="comparisons">
-  <ul>
+  <table width="100%">
+    <h2 class="text-center">Which is better?<sup><a href="#better-faq" id="better-faq-asterisk">*</a></sup></h2>
+    {{#if loading}}
+    <div class="progress progress-striped active">
+      <div class="bar" style="width: 100%;"></div>
+    </div>
+    {{/if}}
     {{#each comparisons}}
       {{> comparison}}
     {{/each}}
-  </ul>
+  </table>
 </template>
 
 <template name="comparison">
-  <li>
-    <a href="#" class="btn btn-large option1 {{#if option1selected}}btn-success selected{{/if}} {{#if choice}}disabled{{/if}}">{{option1name}}</a>
-    {{#if option1selected}}&gt;{{/if}}{{#if option2selected}}&lt;{{/if}}{{#unless choice}}???{{/unless}}
-    <a href="#" class="btn btn-large option2 {{#if option2selected}}btn-success selected{{/if}} {{#if choice}}disabled{{/if}}">{{option2name}}</a>
-  </li>
+  {{#if option1name}}{{#if option2name}}
+  <tr>
+    <td width="47%" class="text-right"><a href="#" class="btn btn-large option1 {{#if option1selected}}btn-success selected{{/if}} {{#if choice}}disabled{{/if}}">{{option1name}}</a></td>
+    <td width="6%" class="text-center">{{#if option1selected}}&gt;{{/if}}{{#if option2selected}}&lt;{{/if}}{{#unless choice}}???{{/unless}}</td>
+    <td widht="47%" class="text-left"><a href="#" class="btn btn-large option2 {{#if option2selected}}btn-success selected{{/if}} {{#if choice}}disabled{{/if}}">{{option2name}}</a></td>
+  </tr>
+  {{/if}}{{/if}}
 </template>
 
 <template name="ranking">
   <ol>
     {{#each contenders}}
-	    {{> contender}}
+    {{> contender}}
     {{/each}}
   </ol>
 </template>

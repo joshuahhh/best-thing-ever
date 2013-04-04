@@ -98,7 +98,8 @@ Meteor.methods({
 		    option2: option2,
        		    session: session_id,
 		    time_issued: Date.now()};
-      return Comparisons.insert(comparison);
+      Comparisons.insert(comparison);
+      return comparison;
     }
   },
 
