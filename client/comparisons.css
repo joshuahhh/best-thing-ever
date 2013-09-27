@@ -1,0 +1,15 @@
+.score {
+    color: #C6C6C6;
+    font-weight: bold;
+    font-size: 110%;
+}
+
+.hovered {
+    /* background: #EEEEEE; */
+}
+
+/*
+tr.comparison-row {
+    display:none;
+}
+*/

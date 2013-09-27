@@ -1,93 +1,68 @@
-// Ranker -- client
+// Project Best Thing Ever -- client
+
+var Router = Backbone.Router.extend({
+  routes: {
+    "": "root",
+    "live": "live",
+    "results": "results",
+  },
+  root: function () {
+   Session.set('operation', 'ranker');
+   this.navigate('/');
+  },
+  live: function (userId) {
+   Session.set('operation', 'live');
+   this.navigate('live');
+  },
+  results: function (userId) {
+   Session.set('operation', 'results');
+   this.navigate('results');
+  },
+});
+var app = new Router;
+Meteor.startup(function () {
+  Backbone.history.start({pushState: true});
+});
 
 Meteor.startup(function () {
+  // Why Meteor.startup? Because autorun is pretty aggressive about
+  // how early it runs things, and we need our collections to be
+  // defined. DEAL WITH IT.
   Deps.autorun(function () {
-    if (! Session.get("session-id")) {
-      console.log("No session id... let's get one");
-      var session_id = Sessions.insert({});
-      Session.set("session-id", session_id);
-      getNewComparison();
+    if (Session.get('operation') == 'ranker') {
+      if (! Session.get("session-id")) {
+	console.log("No session id... let's get one");
+	var session_id = Sessions.insert({});
+	Session.set("session-id", session_id);
+	getNewComparison();
+      }
+      Meteor.subscribe("comparisons-by-session-id", Session.get("session-id"));
     }
-  });
-  Deps.autorun(function () {
-    Meteor.subscribe("comparisons-by-session-id", Session.get("session-id"));
-  });
-  Deps.autorun(function () {
+    if (Session.get('operation') == 'live') {
+      Meteor.subscribe("comparisons-resolved-last-n", 10);
+    }
+    if (Session.get('operation') == 'results') {
+      Meteor.subscribe("contenders-top-n", 10);
+      Meteor.subscribe("contenders-top-n", 10, 1);
+    }
+
     Comparisons.find({}).map(function (comp) {
       Meteor.subscribe("contenders-by-id", {$in: [comp.option1, comp.option2]});
     });
   });
 });
 
+if (matchMedia) {
+  function onWidthChange(mq) {
+    Session.set("wide", mq.matches);
+  }
+
+  var mq = window.matchMedia("(min-width: 500px)");
+  mq.addListener(onWidthChange);
+  onWidthChange(mq);
+}
+
+
 getNewComparison = function () {
   Meteor.call("getNewComparison", Session.get("session-id"))
 };
-
-Template.page.showRanking = function () {
-  return Session.get("showRanking");
-}
-
-Template.page.showBetterFAQ = function () {
-  return Session.get("showBetterFAQ");
-}
-
-Template.page.id = function () {
-  console.log("session-id is...");
-  console.log(Session.get("session-id"));
-  return Session.get("session-id");
-};
-
-Template.comparisons.comparisons = function () {
-  return Comparisons.find({session: Session.get("session-id")},
-			  {sort: {time_issued: -1}});
-};
-
-Template.comparisons.loading = function () {
-  return !Comparisons.findOne({session: Session.get("session-id")});
-};
-
-Template.comparisons.events({
-  'click #better-faq-asterisk': function () {
-    var old = Session.get("showBetterFAQ");
-    Session.set("showBetterFAQ", !old);
-    return !old;  // if the faq is present, go to it!
-  }
-});
-
-Template.comparison.option1name = function () {
-  if (contender1 = Contenders.findOne({_id: this.option1})) {
-    return contender1.name;
-  }
-}
-Template.comparison.option2name = function () {
-  if (contender2 = Contenders.findOne({_id: this.option2})) {
-    return contender2.name;
-  }
-}
-Template.comparison.option1selected = function () {
-  return this.choice == 1;
-}
-Template.comparison.option2selected = function () {
-  return this.choice == 2;
-}
-
-Template.comparison.events({
-  'click .option1': function () {
-    if (!this.choice) {
-	Meteor.call("submitComparison", this._id, 1);
-	getNewComparison();
-    }
-    return false;
-  },
-  'click .option2': function () {
-    if (!this.choice) {
-	Meteor.call("submitComparison", this._id, 2);
-	getNewComparison();
-    }
-    return false;
-  }
-});
-
-Template.ranking.contenders = function () {
-    return Contenders.find({}, {sort: {score: -1, name: 1}});
-}

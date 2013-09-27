@@ -27,18 +27,7 @@ Contenders.allow({
 if (Meteor.isServer) {
   Meteor.startup(function () {
     Contenders._ensureIndex({key: 1, random: 1});
-    url = "http://web.mit.edu/joshuah/Public/article_names.txt";
-    Meteor.http.get(url, function (error, result) {
-      names = result.content.split('\n');
-      for (var i = 0; i < names.length; i++) {
-        if (! Contenders.findOne({name: names[i]})) {
-          Contenders.insert({
-            name: names[i],
-            random: Math.random()
-          });
-        }
-      }
-    });
+    Meteor.call("loadNewContenders");
   });
 };
 
@@ -108,7 +97,32 @@ Meteor.methods({
                        {$set: {'choice': choice,
                                'time_resolved': Date.now()}});
     if (Meteor.isServer) {
-      update_score(Comparisons.findOne({_id:comparison_id}))
+      apply_comparison(Comparisons.findOne({_id:comparison_id}))
+    }
+  },
+
+  rescoreEverything: function() {
+    if (Meteor.isServer) {
+      reset_scores();
+      create_scores();
+    }
+  },
+
+  loadNewContenders: function() {
+    if (Meteor.isServer) {
+      url = "http://web.mit.edu/joshuah/Public/article_names.txt";
+      Meteor.http.get(url, function (error, result) {
+	if (error) {return;}
+	names = result.content.split('\n');
+	for (var i = 0; i < names.length; i++) {
+	  if (! Contenders.findOne({name: names[i]})) {
+	    Contenders.insert({
+	      name: names[i],
+	      random: Math.random()
+	    });
+	  }
+	}
+      });
     }
   }
 });

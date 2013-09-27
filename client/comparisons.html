@@ -1,0 +1,34 @@
+<template name="comparisons">
+  <table width="100%">
+    {{#each comparisons}}
+    {{> comparison}}
+    {{/each}}
+  </table>
+</template>
+
+<template name="comparison">
+  {{#if option1name}}{{#if option2name}}
+  <tr class="comparison-row">
+    <td width="47%" class="text-right" style="float:none">
+      <table align="right"><tr>  {{! TODO: kill table }}
+	  <td>
+	    {{#if wide}}<span class="score">{{option1score}}</span>{{/if}}
+	  </td>
+	  <td>
+	    <a href="#" class="btn {{#if wide}}btn-large{{/if}} option1 {{#if option1selected}}btn-success selected{{/if}} {{#if choice}}disabled{{/if}}">{{option1name}}</a>
+	  </td>
+      </tr></table>
+    </td>
+    <td width="6%" class="text-center">{{#if option1selected}}&gt;{{/if}}{{#if option2selected}}&lt;{{/if}}{{#unless choice}}???{{/unless}}</td>
+    <td width="47%" class="text-left">
+      <table align="left" style="float:left"><tr>
+	  <td><a href="#" class="btn {{#if wide}}btn-large{{/if}} option2 {{#if option2selected}}btn-success selected{{/if}} {{#if choice}}disabled{{/if}}">{{option2name}}</a></td>
+	  <td>
+	    {{#if wide}}<span class="score">{{option2score}}</span>{{/if}}
+	  </td>
+      </tr></table>
+      {{#if wide}}<span class="time" style="float:right" title="{{time}}"></span>{{/if}}
+    </td>
+  </tr>
+  {{/if}}{{/if}}
+</template>
